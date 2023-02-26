@@ -1,0 +1,33 @@
+version: "3"
+services:
+  frontend:
+    build: frontend
+    depends_on:
+      - api
+    stdin_open: true
+    volumes:
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_BACKEND_URL=http://localhost:3001
+  api:
+    build: backend
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - database
+    tty: true
+    ports:
+      - "3001:3001"
+    environment:
+      - BACKEND_URL=http://api.coinlayer.com/api
+      - BACKEND_URL_ACCESS_KEY=522df20f7bc454382c04e7f9f042b7ae
+      - DATABASE_URL=mongodb://database:27017/cryptocurrency
+  database:
+    image: mongo:4.4
+    ports:
+      - "27017:27017"

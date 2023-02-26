@@ -1,0 +1,28 @@
+$fontFamily: 'Lato', helvetica, Arial, Sans-serif
+.transaction
+  //padding: 5px
+  height: 10px
+  max-height: 100px
+  min-width: 100%
+  width: 100%
+  margin: 30px auto 30px auto
+
+.inputs
+  display: grid
+  grid-template-columns: repeat(8, 1fr)
+  grid-gap: 1rem
+  margin-top: 1rem
+  @media (max-width: 650px)
+    grid-template-columns: 100%
+
+.filters
+  display: grid
+  grid-template-columns: repeat(12, 1fr)
+  grid-gap: 1rem
+  margin-top: 1rem
+  @media (max-width: 650px)
+    grid-template-columns: 100%
+.display
+  padding: 0 30px 20px
+  margin-top: 70px
+
