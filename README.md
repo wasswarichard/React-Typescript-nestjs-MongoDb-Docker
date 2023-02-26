@@ -46,6 +46,6 @@ Backend:
 
 Frontend:
 
-![Snapshot of backend cases](/docs/frontend-testcases.png)
+![Snapshot of frontend cases](/docs/frontend-testcases.png)
 
 Thanks for your time :)
