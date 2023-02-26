@@ -25,7 +25,7 @@ services:
       - "3001:3001"
     environment:
       - BACKEND_URL=http://api.coinlayer.com/api
-      - BACKEND_URL_ACCESS_KEY=1c95ea0964647cf493ac0884b0a9ca57
+      - BACKEND_URL_ACCESS_KEY=3d19b52343fb26652f427616a6a517d9
       - DATABASE_URL=mongodb://database:27017/cryptocurrency
   database:
     image: mongo:4.4
