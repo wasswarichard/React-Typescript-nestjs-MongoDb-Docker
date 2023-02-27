@@ -17,7 +17,7 @@
 ```
 BACKEND_URL=http://api.coinlayer.com/api
 BACKEND_URL_ACCESS_KEY=522df20f7bc454382c04e7f9f042b7ae
-DATABASE_URL=mongodb://127.0.0.1/:27017/cryptocurrency
+DATABASE_URL=mongodb://127.0.0.1:27017/cryptocurrency
 ```
 Start the nestjs server using `npm start`. The server will start on http://localhost:3001
 
