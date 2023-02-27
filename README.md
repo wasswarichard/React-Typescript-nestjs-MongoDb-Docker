@@ -39,11 +39,6 @@ REACT_APP_BACKEND_URL=http://localhost:3001
 3. In the root of the project run `docker-compose up --build`. The backend will start running on port 3001 and frontend on port 3000. The application can be accessed on http://localhost:3000
 
 ## Test cases snapshot
-
-Backend:
-
-![Snapshot of backend cases](/docs/frontend-testcases.png)
-
 Frontend:
 
 ![Snapshot of frontend cases](/docs/frontend-testcases.png)
