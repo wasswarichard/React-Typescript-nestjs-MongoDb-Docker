@@ -1,29 +1,22 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
-
+import { CreateTransactionDto } from './dto/create-transaction.dto';
+import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+@ApiTags('transactions')
 @Controller('transactions')
 export class TransactionsController {
   constructor(private readonly transactionsService: TransactionsService) {}
+  @ApiCreatedResponse()
   @Post()
-  async addTransaction(
-    @Body('transactionDate') transactionDate: string,
-    @Body('currencyFrom') currencyFrom: string,
-    @Body('amount1') amount1: number,
-    @Body('currencyTo') currencyTo: string,
-    @Body('amount2') amount2: number,
-    @Body('type') type: string,
-  ) {
-    const id = await this.transactionsService.insertTransaction(
-      transactionDate,
-      currencyFrom,
-      amount1,
-      currencyTo,
-      amount2,
-      type,
-    );
+  async addTransaction(@Body() body: CreateTransactionDto) {
+    const id = await this.transactionsService.insertTransaction(body);
     return { id };
   }
 
+  @Get(':id')
+  getTransactionById(@Param('id') id: string) {
+    return this.transactionsService.findTransactionById(id);
+  }
   @Get()
   async getAllTransactions(
     @Query('page') page: number,
@@ -32,7 +25,7 @@ export class TransactionsController {
     return await this.transactionsService.getTransactions(page, limit);
   }
 
-  @Get('/rate')
+  @Get('rate')
   async getTransaction(
     @Query('currencyFrom') currencyFrom: string,
     @Query('type') type: string,

@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { CreateTransactionDto } from './dto/create-transaction.dto';
 
 @Injectable()
 export class TransactionsService {
@@ -13,22 +14,8 @@ export class TransactionsService {
     private readonly eventEmitter: EventEmitter2,
   ) {}
 
-  async insertTransaction(
-    transactionDate: string,
-    currencyFrom: string,
-    amount1: number,
-    currencyTo: string,
-    amount2: number,
-    type: string,
-  ) {
-    const transaction = new this.transactionModel({
-      transactionDate,
-      currencyFrom,
-      amount1,
-      currencyTo,
-      amount2,
-      type,
-    });
+  async insertTransaction(createTransactionDto: CreateTransactionDto) {
+    const transaction = new this.transactionModel({ ...createTransactionDto });
     const result = await transaction.save();
     this.eventEmitter.emit('transaction.created', result);
     return result.id as string;
@@ -62,7 +49,11 @@ export class TransactionsService {
 
     return transaction;
   }
-  @Cron(CronExpression.EVERY_5_MINUTES, { name: 'fetch_live_transactions' })
+
+  async findTransactionById(id: string) {
+    return this.transactionModel.findById(id);
+  }
+  @Cron(CronExpression.EVERY_30_MINUTES, { name: 'fetch_live_transactions' })
   async fetchLiveTransactions() {
     const response = await fetch(
       `${process.env.BACKEND_URL}/live?access_key=${process.env.BACKEND_URL_ACCESS_KEY}&symbols=BTC,ETH,XRP`,
@@ -81,22 +72,7 @@ export class TransactionsService {
       result.push(payload);
     }
     result?.forEach((transaction) => {
-      const {
-        transactionDate,
-        currencyFrom,
-        amount1,
-        currencyTo,
-        amount2,
-        type,
-      } = transaction;
-      this.insertTransaction(
-        transactionDate,
-        currencyFrom,
-        amount1,
-        currencyTo,
-        amount2,
-        type,
-      );
+      this.insertTransaction(transaction);
     });
   }
 }
